@@ -6,7 +6,7 @@ This Docker image is used to test the Kanboard plugin [SSL Client Certificate](h
 Create SSL certificates
 -----------------------
 
-TLDR to create the SSL certificates:
+CA and Server SSL certificate:
 
 ```bash
 # Generate self-signed certificate CA
@@ -26,6 +26,8 @@ openssl x509 -req -in server.req -CA ca.cer -CAkey ca.key \
 
 rm -f server.req
 ```
+
+Client SSL certificate:
 
 ```bash
 # Private key for client
