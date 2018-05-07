@@ -1,7 +1,11 @@
 FROM ubuntu:14.04
 
 RUN apt-get update && \
-    apt-get install -y apache2 php5 php5-sqlite php5-gd curl unzip && \
+    apt-get install -y apache2 curl unzip git software-properties-common && \
+    LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/php && \
+    LC_ALL=C.UTF-8 add-apt-repository -y ppa:ondrej/apache2 && \
+    apt-get update && \
+    apt-get -y install php5.6 php5.6-sqlite php5.6-mbstring php5.6-dom php5.6-xml php5.6-simplexml php5.6-gd && \
     echo "ServerName localhost" >> /etc/apache2/apache2.conf && \
     a2enmod rewrite && \
     a2enmod ssl && \
@@ -9,10 +13,8 @@ RUN apt-get update && \
 
 RUN cd /var/www \
     && rm -rf /var/www/html \
-    && curl -sLO https://github.com/fguillot/kanboard/archive/master.zip \
-    && unzip -qq master.zip \
-    && rm -f *.zip \
-    && mv kanboard-master html \
+    && git clone https://github.com/kanboard/kanboard.git \
+    && mv kanboard html \
     && cd /var/www/html && composer --prefer-dist --no-dev --optimize-autoloader --quiet install \
     && chown -R www-data:www-data /var/www/html/data
 
